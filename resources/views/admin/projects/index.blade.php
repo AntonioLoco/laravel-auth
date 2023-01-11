@@ -4,6 +4,11 @@
     <div class="container mt-4">
         <h3 class="text-center">La lista dei Progetti</h3>
         <div class="row justify-content-center">
+            @if (session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="col-8">
                 <a href="{{ route('admin.projects.create') }}" class="btn btn-primary my-3">Crea un
                     progetto</a>
@@ -33,7 +38,8 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit" class="btn btn-danger">
+                                        <button type="submit" class="btn btn-danger delete-btn"
+                                            data-project-title="{{ $project->title }}">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
@@ -43,6 +49,7 @@
                     </tbody>
                 </table>
             </div>
+            @include('partials.delete-modal')
         </div>
     </div>
 @endsection

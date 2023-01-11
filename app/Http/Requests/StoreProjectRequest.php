@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreProjectRequest extends FormRequest
 {
@@ -24,8 +25,9 @@ class StoreProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            "title" => "required|max:150",
-            "link" => "max:255"
+            "title" => ["required", "max:150", "unique:projects"],
+            "description" => ["nullable"],
+            "link" => ["max:255"]
         ];
     }
 
@@ -34,6 +36,7 @@ class StoreProjectRequest extends FormRequest
         return [
             "title.required" => "Il titolo è richiesto",
             "title.max" => "La lunghezza massima del titolo è 150 caratteri",
+            "title.unique" => "Il titolo è già presente",
             "link.max" => "La lunghezza massima del link è 255 caratteri"
         ];
     }

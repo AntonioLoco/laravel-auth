@@ -7,7 +7,6 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -41,11 +40,16 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $form_data = $request->validated();
-        $form_data["slug"] = Str::slug($form_data["title"]);
-        $newProject = new Project();
-        $newProject->fill($form_data);
-        $newProject->save();
-        return redirect()->route("admin.projects.show", $newProject->slug);
+        $form_data["slug"] = Project::generateSlug($form_data['title']);
+
+        // $newProject = new Project();
+        // $newProject->fill($form_data);
+        // $newProject->save();
+
+        //Shortcut per riempire i dati, serve sempre fillable
+        $newProject = Project::create($form_data);
+
+        return redirect()->route("admin.projects.show", $newProject->slug)->with('message', "$newProject->title creato con successo");
     }
 
     /**
@@ -80,9 +84,9 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $form_data = $request->validated();
-        $form_data["slug"] = Str::slug($form_data["title"]);
+        $form_data["slug"] =  Project::generateSlug($form_data['title']);
         $project->update($form_data);
-        return redirect()->route("admin.projects.show", $project->slug);
+        return redirect()->route("admin.projects.show", $project->slug)->with('message', "$project->title modificato con successo!");;
     }
 
     /**
@@ -94,6 +98,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route("admin.projects.index");
+        return redirect()->route("admin.projects.index")->with("message", "$project->title è stato cancellato");
     }
 }
