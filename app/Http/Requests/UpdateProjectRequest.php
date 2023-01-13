@@ -27,7 +27,8 @@ class UpdateProjectRequest extends FormRequest
         return [
             "title" => ["required", "max:150", Rule::unique("projects", "title")->ignore($this->project)],
             "description" => ["nullable"],
-            "link" => ["max:255"]
+            "link" => ["max:255"],
+            "image_cover" => ["nullable", "image", "max:512"],
         ];
     }
 
@@ -37,7 +38,9 @@ class UpdateProjectRequest extends FormRequest
             "title.required" => "Il titolo è richiesto",
             "title.max" => "La lunghezza massima del titolo è 150 caratteri",
             "title.unique" => "Il titolo è già presente",
-            "link.max" => "La lunghezza massima del link è 255 caratteri"
+            "link.max" => "La lunghezza massima del link è 255 caratteri",
+            "image_cover.image" => "Il file richiesto deve essere un immagine",
+            "image_cover.max" => "La dimensione massima può essere 512 Kb"
         ];
     }
 }

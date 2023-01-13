@@ -38,7 +38,9 @@ class StoreProjectRequest extends FormRequest
             "title.required" => "Il titolo è richiesto",
             "title.max" => "La lunghezza massima del titolo è 150 caratteri",
             "title.unique" => "Il titolo è già presente",
-            "link.max" => "La lunghezza massima del link è 255 caratteri"
+            "link.max" => "La lunghezza massima del link è 255 caratteri",
+            "image_cover.image" => "Il file richiesto deve essere un immagine",
+            "image_cover.max" => "La dimensione massima può essere 512 Kb"
         ];
     }
 }

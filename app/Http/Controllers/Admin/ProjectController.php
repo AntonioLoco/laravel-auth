@@ -87,6 +87,18 @@ class ProjectController extends Controller
     {
         $form_data = $request->validated();
         $form_data["slug"] =  Project::generateSlug($form_data['title']);
+
+        if ($request->hasFile("image_cover")) {
+
+            //Se il post da modificare ha già l'immagine andiamo a eliminarla
+            if ($project->image_cover) {
+                Storage::delete($project->image_cover);
+            }
+
+            $path = Storage::put("project_images", $form_data["image_cover"]);
+            $form_data["image_cover"] = $path;
+        }
+
         $project->update($form_data);
         return redirect()->route("admin.projects.show", $project->slug)->with('message', "$project->title modificato con successo!");;
     }
@@ -99,6 +111,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->image_cover) {
+            Storage::delete($project->image_cover);
+        }
         $project->delete();
         return redirect()->route("admin.projects.index")->with("message", "$project->title è stato cancellato");
     }
