@@ -15,6 +15,10 @@
                     <h5>{{ $project->created_at }}</h5>
                     <p>{{ $project->slug }}</p>
                 </div>
+                <div class="text-center my-3">
+                    <img src="{{ asset('storage/' . $project->image_cover) }}" alt="Image {{ $project->title }}"
+                        class="w-50">
+                </div>
                 <p class="mt-3">{{ $project->description }}</p>
             </div>
         </div>
